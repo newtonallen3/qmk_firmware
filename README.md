@@ -2,7 +2,7 @@
 
 QMK setup instructions: https://docs.qmk.fm/#/newbs_getting_started
 
- * keyboard name: keychron/q1/ansi_encoder (from `qmk list-keyboards`)
+ * keyboard name: keychron/q1_pro/ansi_knob (from `qmk list-keyboards`)
  * config: ~/personal/qmk/keyboards/keychron/q1/ansi_encoder/keymaps/newtonallen3
 
 References:
@@ -17,8 +17,8 @@ source ~/.virtualenvs/qmk/bin/activate
 python3 -m pip install --user qmk
 qmk setup -H ~/personal/qmk newtonallen3/qmk_firmware
 
-qmk compile -kb keychron/q1/ansi_encoder -km default
-qmk config user.keyboard=keychron/q1/ansi_encoder
+qmk compile -kb keychron/q1_pro/ansi_knob -km default
+qmk config user.keyboard=keychron/q1_pro/ansi_knob
 qmk config user.keymap=newtonallen3
 qmk new-keymap
 ```
@@ -26,7 +26,7 @@ qmk new-keymap
 ## Editing
 
 ```
-vim ~/personal/qmk/keyboards/keychron/q1/ansi_encoder/keymaps/newtonallen3/keymap.c
+vim ~/personal/qmk_keychron/keyboards/keychron/q1_pro/ansi_knob/keymaps/newtonallen3/keymap.c
 ```
 
 ## Compiling and flashing
@@ -37,7 +37,7 @@ Tip: to enter the bootloader, unplug keyboard, then hold escape while plugging i
 
 ```
 source ~/.virtualenvs/qmk/bin/activate
-qmk compile -kb keychron/q1/ansi_encoder -km newtonallen3
+qmk compile -kb keychron/q1_pro/ansi_knob -km newtonallen3
 qmk flash
 ```
 
