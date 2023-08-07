@@ -26,10 +26,11 @@ enum layers{
   WIN_DESKTOP_NAV,
   WIN_TERMINAL_NAV,
   WIN_TAB_NAV,
+  WIN_WINDOW_NAV,
 };
 
 
-// Home row mods. From https://precondition.github.io/home-row-mods#use-left-and-right-modifiers-but-beware-of-altgr.
+// Home row mods ("GACS"). From https://precondition.github.io/home-row-mods#use-left-and-right-modifiers-but-beware-of-altgr.
 #define HOME_A LGUI_T(KC_A)
 #define HOME_S LALT_T(KC_S)
 #define HOME_D LCTL_T(KC_D)
@@ -42,14 +43,19 @@ enum layers{
 // Caps lock == Escape if tapped; nav layer if held.
 #define ESC_OR_NAV LT(WIN_NAV, KC_ESC)
 
-// e == e if tapped; if held, Ctrl+Alt nav layer
+// e == e if tapped; if held, Ctrl+Alt nav layer.
 #define E_OR_NAV LT(WIN_DESKTOP_NAV, KC_E)
 
-// w == w if tapped; if held, Alt nav layer
+// w == w if tapped; if held, Alt nav layer.
 #define W_OR_NAV LT(WIN_TERMINAL_NAV, KC_W)
 
-// r == r if tapped; if held, layer for Tab+PageUp tab navigation
+// r == r if tapped; if held, layer for Tab+PageUp tab navigation.
 #define R_OR_NAV LT(WIN_TAB_NAV, KC_R)
+
+// z == z if tapped; if held, layer for Alt+Tab for window switching.
+// TODO: make this work. It's not currently switching layers. Need to use
+// Tap Dance to achieve both layer switching and modifier addition when held.
+#define Z_OR_NAV LALT_T(KC_Z)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  [MAC_BASE] = LAYOUT_ansi_82(
@@ -68,7 +74,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,            _______,  _______,  _______,  _______,  BAT_LVL,  NK_TOGG,  _______,  _______,  _______,  _______,            _______,  _______,
         _______,  _______,  _______,                                _______,                                _______,  _______,  _______,  _______,  _______,  _______),
 
-    // Home-row mods ("GACS").
     [WIN_BASE] = LAYOUT_ansi_82(
         KC_ESC,   KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,   KC_DEL,             KC_MUTE,
         KC_GRV,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,            KC_PGUP,
@@ -111,12 +116,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         XXXXXXX,            XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,  XXXXXXX,
         XXXXXXX,  XXXXXXX,  XXXXXXX,                                TO(2),                                  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX),
 
-    // For moving between tabs and windows (Ctrl+Tab, Alt+Tab, Ctrl+PageUp, etc).
+    // For moving between tabs and rearranging (Ctrl+Tab, Ctrl+PageUp, etc).
     [WIN_TAB_NAV] = LAYOUT_ansi_82(
         XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,
         XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,
         XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  C(S(KC_PGDN)),A(KC_TAB),C(S(KC_PGUP)),XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,          XXXXXXX,
         XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  C(S(KC_TAB)),A(S(KC_TAB)),C(KC_TAB),XXXXXXX,XXXXXXX,        XXXXXXX,            XXXXXXX,
+        XXXXXXX,            XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,  XXXXXXX,
+        XXXXXXX,  XXXXXXX,  XXXXXXX,                                TO(2),                                  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX),
+
+    // For switching between windows (Alt+Tab).
+    [WIN_WINDOW_NAV] = LAYOUT_ansi_82(
+        XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,
+        XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,
+        XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,
+        XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  S(KC_TAB),KC_TAB,   XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,            XXXXXXX,
         XXXXXXX,            XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,  XXXXXXX,
         XXXXXXX,  XXXXXXX,  XXXXXXX,                                TO(2),                                  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX),
 };
@@ -131,6 +145,7 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
     [WIN_DESKTOP_NAV] = {ENCODER_CCW_CW(RGB_VAD, RGB_VAI)},
     [WIN_TERMINAL_NAV] = {ENCODER_CCW_CW(RGB_VAD, RGB_VAI)},
     [WIN_TAB_NAV] = {ENCODER_CCW_CW(RGB_VAD, RGB_VAI)},
+    [WIN_WINDOW_NAV] = {ENCODER_CCW_CW(RGB_VAD, RGB_VAI)},
 };
 #endif // ENCODER_MAP_ENABLE
 
@@ -192,6 +207,9 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
       case 6:
       case 7:
         rgb_matrix_set_color(i, 0, 0, 0);
+        break;
+      case 8:
+        rgb_matrix_set_color(i, RGB_RED);
         break;
       default:
         break;
