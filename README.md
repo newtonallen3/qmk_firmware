@@ -115,8 +115,6 @@ Pid: 0x0610
 
 ## TODO
 
- - Mod tap home row - try it
- - Tap dance on caps lock to enable temporary or permanent layer shifting
  - Disable LED effects by default (save power)? https://docs.qmk.fm/#/feature_rgb_matrix?id=indicators-without-rgb-matrix-effect
  - Layer for customizing LED effects
  - Try "bilateral combinations" if/when they're available to help avoid home row mod accidental holds: https://github.com/manna-harbour/qmk_firmware/blob/bilateral-combinations/docs/tap_hold.md#bilateral-combinations
