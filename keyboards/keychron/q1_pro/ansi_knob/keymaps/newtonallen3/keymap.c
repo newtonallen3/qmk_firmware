@@ -22,9 +22,10 @@ enum layers{
   MAC_FN,
   WIN_BASE,
   WIN_NAV,
-  WIN_TERMINAL_NAV,
-  WIN_DESKTOP_NAV,
   WIN_NUMPAD,
+  WIN_DESKTOP_NAV,
+  WIN_TERMINAL_NAV,
+  WIN_TAB_NAV,
 };
 
 
@@ -41,11 +42,14 @@ enum layers{
 // Caps lock == Escape if tapped; nav layer if held.
 #define ESC_OR_NAV LT(WIN_NAV, KC_ESC)
 
-// e == e if tapped; Ctrl+Alt nav layer if held
+// e == e if tapped; if held, Ctrl+Alt nav layer
 #define E_OR_NAV LT(WIN_DESKTOP_NAV, KC_E)
 
-// w == w if tapped; Alt nav layer if held
+// w == w if tapped; if held, Alt nav layer
 #define W_OR_NAV LT(WIN_TERMINAL_NAV, KC_W)
+
+// r == r if tapped; if held, layer for Tab+PageUp tab navigation
+#define R_OR_NAV LT(WIN_TAB_NAV, KC_R)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  [MAC_BASE] = LAYOUT_ansi_82(
@@ -68,10 +72,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [WIN_BASE] = LAYOUT_ansi_82(
         KC_ESC,   KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,   KC_DEL,             KC_MUTE,
         KC_GRV,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,            KC_PGUP,
-        KC_TAB,   KC_Q,     W_OR_NAV, E_OR_NAV, KC_R,     KC_T,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,            KC_PGDN,
+        KC_TAB,   KC_Q,     W_OR_NAV, E_OR_NAV, R_OR_NAV, KC_T,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,            KC_PGDN,
         ESC_OR_NAV, HOME_A, HOME_S,   HOME_D,   HOME_F,   KC_G,     KC_H,     HOME_J,   HOME_K,   HOME_L,   HOME_SCLN, KC_QUOT, KC_ENT,   KC_HOME,
         KC_LSFT,            KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,     KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,            KC_RSFT,  KC_UP,
-        KC_LCTL,  KC_LGUI,  KC_LALT,                                KC_SPC,                                 TO(5),    MO(3),    KC_RCTL,  KC_LEFT,  KC_DOWN,  KC_RGHT),
+        KC_LCTL,  KC_LGUI,  KC_LALT,                                KC_SPC,                                 TG(4),    MO(3),    KC_RCTL,  KC_LEFT,  KC_DOWN,  KC_RGHT),
 
     [WIN_NAV] = LAYOUT_ansi_82(
         _______,  KC_BRID,  KC_BRIU,  KC_TASK,  KC_FILE,  RGB_VAD,  RGB_VAI,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,  KC_VOLD,  KC_VOLU,  KC_INS,            RGB_TOG,
@@ -80,6 +84,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,  KC_LGUI,  KC_LALT,  KC_LCTL,  KC_LSFT,  _______,  KC_HOME,  KC_LEFT,  KC_DOWN,  KC_RGHT,  KC_END,   _______,            _______,            KC_END,
         _______,            C(KC_Z),  C(KC_X),  C(KC_C),  C(KC_V),  _______,  KC_BSPC,  KC_DEL,   KC_INS,   _______,  _______,            _______,  _______,
         _______,  _______,  _______,                                TO(2),                                  _______,  _______,  _______,  _______,  _______,  _______),
+
+    [WIN_NUMPAD] = LAYOUT_ansi_82(
+        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
+        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
+        _______,  KC_PAST,  KC_7,     KC_8,     KC_9,     KC_PPLS,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
+        _______,  KC_0,     KC_1,     KC_2,     KC_3,     KC_PEQL,  _______,  _______,  _______,  _______,  _______,  _______,            _______,            _______,
+        _______,            KC_DOT,   KC_4,     KC_5,     KC_6,     KC_PMNS,  KC_BSPC,  KC_DEL,   _______,  _______,  _______,            _______,  _______,
+        _______,  _______,  _______,                                KC_SPC,                                 _______,  _______,  _______,  _______,  _______,  _______),
 
     // For moving between desktops. The arrow keys have Ctrl+Alt already enabled. Shift can be added if desired.
     [WIN_DESKTOP_NAV] = LAYOUT_ansi_82(
@@ -99,13 +111,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         XXXXXXX,            XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,  XXXXXXX,
         XXXXXXX,  XXXXXXX,  XXXXXXX,                                TO(2),                                  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX),
 
-    [WIN_NUMPAD] = LAYOUT_ansi_82(
-        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
-        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
-        _______,  KC_PAST,  KC_7,     KC_8,     KC_9,     KC_PPLS,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
-        _______,  KC_0,     KC_1,     KC_2,     KC_3,     KC_PEQL,  _______,  _______,  _______,  _______,  _______,  _______,            _______,            _______,
-        _______,            KC_DOT,   KC_4,     KC_5,     KC_6,     KC_PMNS,  _______,  _______,  _______,  _______,  _______,            _______,  _______,
-        _______,  _______,  _______,                                TO(2),                                  _______,  _______,  _______,  _______,  _______,  _______)
+    // For moving between tabs and windows (Ctrl+Tab, Alt+Tab, Ctrl+PageUp, etc).
+    [WIN_TAB_NAV] = LAYOUT_ansi_82(
+        XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,
+        XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,
+        XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  C(S(KC_PGDN)),A(KC_TAB),C(S(KC_PGUP)),XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,          XXXXXXX,
+        XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  C(S(KC_TAB)),A(S(KC_TAB)),C(KC_TAB),XXXXXXX,XXXXXXX,        XXXXXXX,            XXXXXXX,
+        XXXXXXX,            XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,  XXXXXXX,
+        XXXXXXX,  XXXXXXX,  XXXXXXX,                                TO(2),                                  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX),
 };
 
 #if defined(ENCODER_MAP_ENABLE)
@@ -114,9 +127,10 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
     [MAC_FN] = {ENCODER_CCW_CW(RGB_VAD, RGB_VAI)},
     [WIN_BASE] = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
     [WIN_NAV] = {ENCODER_CCW_CW(RGB_VAD, RGB_VAI)},
+    [WIN_NUMPAD] = {ENCODER_CCW_CW(RGB_VAD, RGB_VAI)},
     [WIN_DESKTOP_NAV] = {ENCODER_CCW_CW(RGB_VAD, RGB_VAI)},
     [WIN_TERMINAL_NAV] = {ENCODER_CCW_CW(RGB_VAD, RGB_VAI)},
-    [WIN_NUMPAD] = {ENCODER_CCW_CW(RGB_VAD, RGB_VAI)}
+    [WIN_TAB_NAV] = {ENCODER_CCW_CW(RGB_VAD, RGB_VAI)},
 };
 #endif // ENCODER_MAP_ENABLE
 
@@ -171,11 +185,13 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         rgb_matrix_set_color(i, RGB_BLUE);
         break;
       case 4:
-      case 5:
-        rgb_matrix_set_color(i, 0, 0, 0);
-        break;
-      case 6:
         rgb_matrix_set_color(i, RGB_YELLOW);
+        break;
+      // Special nav layers don't need color
+      case 5:
+      case 6:
+      case 7:
+        rgb_matrix_set_color(i, 0, 0, 0);
         break;
       default:
         break;
