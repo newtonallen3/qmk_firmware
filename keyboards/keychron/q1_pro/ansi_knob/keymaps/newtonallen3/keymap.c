@@ -77,6 +77,18 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
 };
 #endif // ENCODER_MAP_ENABLE
 
+// Shift backspace sends delete. (Same for Ctrl+Shift for deleting entire
+// words).
+const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
+
+// This globally defines all key overrides to be used
+const key_override_t **key_overrides = (const key_override_t *[]){
+    &delete_key_override,
+    NULL // Null terminate the array of overrides!
+};
+
+// LEDs indicate current layer (solid color for each layer; base layer is unlit).
+//
 // Example: https://github.com/nblyumberg/qmk_firmware/blob/71620555425803c114decae3ef3136511a368b2f/keyboards/keebio/bdn9/keymaps/nblyumberg/keymap.c#L278
 //
 // Ideally, we'd override rgb_matrix_indicators_user() here. However, Keychron's

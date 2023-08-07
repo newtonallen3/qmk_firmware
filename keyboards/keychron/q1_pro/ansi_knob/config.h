@@ -53,4 +53,9 @@
 #    define CKLED2001_CURRENT_TUNE \
         { 0x38, 0x38, 0x38, 0x38, 0x38, 0x38, 0x38, 0x38, 0x38, 0x38, 0x38, 0x38 }
 
+/* Newton's additions */
+
+// Press both Shift keys to enable CAPS_WORD mode.
+#define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
+
 #endif

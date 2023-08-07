@@ -10,6 +10,13 @@ References:
  * `qmk` CLI docs: https://github.com/qmk/qmk_firmware/blob/master/docs/cli_commands.md#qmk-flash
  * Help: Keychron discord (search "bluetooth_playground")
  * Factory firmware: https://github.com/Keychron/qmk_firmware/blob/bluetooth_playground/keyboards/keychron/q1_pro/firmware/keychron_q1_pro_ansi_knob_via.bin
+ * RGB effects: https://docs.qmk.fm/#/feature_rgb_matrix?id=common-configuration
+ * Key codes: https://docs.qmk.fm/#/keycodes
+
+## Features added:
+
+ * LED indicates current layer (solid color for each layer except base)
+ * "Caps Word" feature triggered by pressing both Shifts
 
 ## One-time setup
 
@@ -103,3 +110,10 @@ Device: Keychron Keychron Q1 Pro
 Vid: 0x3434
 Pid: 0x0610
 ```
+
+## TODO
+
+ - Mod tap home row - try it
+ - Tap dance on caps lock to enable temporary or permanent layer shifting
+ - Disable LED effects by default (save power)? https://docs.qmk.fm/#/feature_rgb_matrix?id=indicators-without-rgb-matrix-effect
+ - Layer for customizing LED effects
