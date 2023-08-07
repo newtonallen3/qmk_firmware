@@ -8,6 +8,8 @@ QMK setup instructions: https://docs.qmk.fm/#/newbs_getting_started
 References:
 
  * `qmk` CLI docs: https://github.com/qmk/qmk_firmware/blob/master/docs/cli_commands.md#qmk-flash
+ * Help: Keychron discord (search "bluetooth_playground")
+ * Factory firmware: https://github.com/Keychron/qmk_firmware/blob/bluetooth_playground/keyboards/keychron/q1_pro/firmware/keychron_q1_pro_ansi_knob_via.bin
 
 ## One-time setup
 
@@ -41,7 +43,7 @@ qmk compile -kb keychron/q1_pro/ansi_knob -km newtonallen3
 qmk flash
 ```
 
-## Troubleshooting flashing
+## Troubleshooting flashing (fixed)
 
 Problem: doesn't recognize device.
 
@@ -77,3 +79,27 @@ sudo udevadm control --reload-rules && sudo udevadm trigger
 Hypothesis: I'm building firmware for the wrong keyboard... the Q1 instead of the Q1 Pro.
 
 Fix: Grab correct firmware from separate Github branch: "bluetooth_playground": https://www.reddit.com/r/Keychron/comments/13l321j/q1_pro_flashing_with_qmk/
+
+Success!
+
+## Troubleshooting - can't use Via with custom flash
+
+Need to use Via v3 keyboard definition:
+https://github.com/the-via/keyboards/blob/4f64a385c87b3738c955ec03339d56da26bd721c/v3/keychron/q1_pro/ansi_rgb_knob.json
+(not yet merged into Via's main branch). Upload this in the design tab in usevia.app.
+
+Now getting these errors:
+
+```
+07:00:07.394
+The device must be opened first.
+Device: Keychron Keychron Q1 Pro
+Vid: 0x3434
+Pid: 0x0610
+
+07:00:07.413
+Received invalid protocol version from device
+Device: Keychron Keychron Q1 Pro
+Vid: 0x3434
+Pid: 0x0610
+```
