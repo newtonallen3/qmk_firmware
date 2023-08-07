@@ -34,13 +34,15 @@ qmk new-keymap
 
 ## Editing
 
+Files of interest are under `keyboards/keychron/q1_pro/ansi_knob`, e.g.
+
 ```
 vim ~/personal/qmk_keychron/keyboards/keychron/q1_pro/ansi_knob/keymaps/newtonallen3/keymap.c
 ```
 
 ## Compiling and flashing
 
-Tip: to enter the bootloader, unplug keyboard, then hold escape while plugging it back in. ... not quite working yet....
+Tip: to enter the bootloader, switch keyboard to off, then hold escape while plugging it back in.
 
 (This is the [Bootmagic Lite](https://github.com/qmk/qmk_firmware/blob/master/docs/feature_bootmagic.md) feature at work! No need for the complicated steps on Keychron's website: https://www.keychron.com/blogs/archived/how-to-reset-your-keychron-q1-to-factory-settings.)
 
@@ -117,3 +119,7 @@ Pid: 0x0610
  - Tap dance on caps lock to enable temporary or permanent layer shifting
  - Disable LED effects by default (save power)? https://docs.qmk.fm/#/feature_rgb_matrix?id=indicators-without-rgb-matrix-effect
  - Layer for customizing LED effects
+ - Try "bilateral combinations" if/when they're available to help avoid home row mod accidental holds: https://github.com/manna-harbour/qmk_firmware/blob/bilateral-combinations/docs/tap_hold.md#bilateral-combinations
+    * The following bigrams are especially commonly triggered: at (Windows+T), kn (Ctrl+N)
+    * Could also try adjusting TAPPING_TERM: https://docs.qmk.fm/#/tap_hold?id=dynamic-tapping-term
+    * Or could try Combo Mods: https://jasoncarloscox.com/blog/combo-mods/
