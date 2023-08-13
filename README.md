@@ -115,6 +115,7 @@ Pid: 0x0610
 
 ## TODO
 
+ - Fix accidental mod taps with "a" key. Maybe increase hold time for this key?
  - Fix Alt+Tab layer (need the layer to have alt held; separate this out from tab switching/moving layer)
  - Disable LED effects by default (save power)? https://docs.qmk.fm/#/feature_rgb_matrix?id=indicators-without-rgb-matrix-effect
  - Layer for customizing LED effects

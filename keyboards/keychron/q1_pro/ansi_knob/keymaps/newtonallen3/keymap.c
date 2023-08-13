@@ -43,16 +43,20 @@ enum layers{
 // Caps lock == Escape if tapped; nav layer if held.
 #define ESC_OR_NAV LT(WIN_NAV, KC_ESC)
 
-// e == e if tapped; if held, Ctrl+Alt nav layer.
+// n and v: if held, enable num layer.
+#define N_OR_NUM LT(WIN_NUMPAD, KC_N)
+#define V_OR_NUM LT(WIN_NUMPAD, KC_V)
+
+// e: if held, enable Ctrl+Alt nav layer.
 #define E_OR_NAV LT(WIN_DESKTOP_NAV, KC_E)
 
-// w == w if tapped; if held, Alt nav layer.
+// w: if held, enable Alt nav layer.
 #define W_OR_NAV LT(WIN_TERMINAL_NAV, KC_W)
 
-// r == r if tapped; if held, layer for Tab+PageUp tab navigation.
+// r: if held, enable layer for Tab+PageUp tab navigation.
 #define R_OR_NAV LT(WIN_TAB_NAV, KC_R)
 
-// z == z if tapped; if held, layer for Alt+Tab for window switching.
+// z: if held, enable layer for Alt+Tab for window switching.
 // TODO: make this work. It's not currently switching layers. Need to use
 // Tap Dance to achieve both layer switching and modifier addition when held.
 #define Z_OR_NAV LALT_T(KC_Z)
@@ -79,7 +83,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_GRV,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,            KC_PGUP,
         KC_TAB,   KC_Q,     W_OR_NAV, E_OR_NAV, R_OR_NAV, KC_T,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,            KC_PGDN,
         ESC_OR_NAV, HOME_A, HOME_S,   HOME_D,   HOME_F,   KC_G,     KC_H,     HOME_J,   HOME_K,   HOME_L,   HOME_SCLN, KC_QUOT, KC_ENT,   KC_HOME,
-        KC_LSFT,            KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,     KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,            KC_RSFT,  KC_UP,
+        KC_LSFT,            KC_Z,     KC_X,     KC_C,     V_OR_NUM, KC_B,     N_OR_NUM, KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,            KC_RSFT,  KC_UP,
         KC_LCTL,  KC_LGUI,  KC_LALT,                                KC_SPC,                                 TG(4),    MO(3),    KC_RCTL,  KC_LEFT,  KC_DOWN,  KC_RGHT),
 
     [WIN_NAV] = LAYOUT_ansi_82(
@@ -93,9 +97,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [WIN_NUMPAD] = LAYOUT_ansi_82(
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
-        _______,  KC_PAST,  KC_7,     KC_8,     KC_9,     KC_PPLS,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
-        _______,  KC_0,     KC_1,     KC_2,     KC_3,     KC_PEQL,  _______,  _______,  _______,  _______,  _______,  _______,            _______,            _______,
-        _______,            KC_DOT,   KC_4,     KC_5,     KC_6,     KC_PMNS,  KC_BSPC,  KC_DEL,   _______,  _______,  _______,            _______,  _______,
+        _______,  KC_PAST,  KC_7,     KC_8,     KC_9,     KC_PPLS,  _______,  KC_LBRC,  KC_RBRC,  _______,  _______,  _______,  _______,  _______,            _______,
+        _______,  KC_0,     KC_1,     KC_2,     KC_3,     KC_EQL,   KC_UNDS,  KC_LPRN,  KC_RPRN,  KC_LCBR,  KC_RCBR,  _______,            _______,            _______,
+        _______,            KC_DOT,   KC_4,     KC_5,     KC_6,     KC_PMNS,  KC_BSPC,  KC_DEL,   _______,  _______,  KC_SLSH,            _______,  _______,
         _______,  _______,  _______,                                KC_SPC,                                 _______,  _______,  _______,  _______,  _______,  _______),
 
     // For moving between desktops. The arrow keys have Ctrl+Alt already enabled. Shift can be added if desired.
@@ -120,8 +124,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [WIN_TAB_NAV] = LAYOUT_ansi_82(
         XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,
         XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,
-        XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  C(S(KC_PGDN)),A(KC_TAB),C(S(KC_PGUP)),XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,          XXXXXXX,
-        XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  C(S(KC_TAB)),A(S(KC_TAB)),C(KC_TAB),XXXXXXX,XXXXXXX,        XXXXXXX,            XXXXXXX,
+        XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX, C(S(KC_PGUP)),XXXXXXX,XXXXXXX, XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,
+        XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  C(S(KC_TAB)),C(S(KC_PGDN)),C(KC_TAB),XXXXXXX,XXXXXXX,       XXXXXXX,            XXXXXXX,
         XXXXXXX,            XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,  XXXXXXX,
         XXXXXXX,  XXXXXXX,  XXXXXXX,                                TO(2),                                  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX),
 
