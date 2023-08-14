@@ -18,15 +18,16 @@
 
 // clang-format off
 enum layers{
-  MAC_BASE,
-  MAC_FN,
-  WIN_BASE,
-  WIN_NAV,
-  WIN_NUMPAD,
-  WIN_DESKTOP_NAV,
-  WIN_TERMINAL_NAV,
-  WIN_TAB_NAV,
-  WIN_WINDOW_NAV,
+  MAC_BASE,         // 0
+  MAC_FN,           // 1
+  WIN_BASE,         // 2
+  WIN_NAV,          // 3
+  WIN_NUMPAD,       // 4
+  WIN_DESKTOP_NAV,  // 5
+  WIN_TERMINAL_NAV, // 6
+  WIN_TAB_NAV,      // 7
+  WIN_WINDOW_NAV,   // 8
+  WIN_COLEMAK_DH,   // 9
 };
 
 
@@ -62,7 +63,7 @@ enum layers{
 #define Z_OR_NAV LALT_T(KC_Z)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
- [MAC_BASE] = LAYOUT_ansi_82(
+    [MAC_BASE] = LAYOUT_ansi_82(
         KC_ESC,   KC_BRID,  KC_BRIU,  KC_MCTL,  KC_LPAD,  RGB_VAD,  RGB_VAI,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,  KC_VOLD,  KC_VOLU,  KC_DEL,             KC_MUTE,
         KC_GRV,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,            KC_PGUP,
         KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,            KC_PGDN,
@@ -82,12 +83,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_ESC,   KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,   KC_DEL,             KC_MUTE,
         KC_GRV,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,            KC_PGUP,
         KC_TAB,   KC_Q,     W_OR_NAV, E_OR_NAV, R_OR_NAV, KC_T,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,            KC_PGDN,
-        ESC_OR_NAV, HOME_A, HOME_S,   HOME_D,   HOME_F,   KC_G,     KC_H,     HOME_J,   HOME_K,   HOME_L,   HOME_SCLN, KC_QUOT, KC_ENT,   KC_HOME,
+        ESC_OR_NAV, HOME_A, HOME_S,   HOME_D,   HOME_F,   KC_G,     KC_H,     HOME_J,   HOME_K,   HOME_L,   HOME_SCLN, KC_QUOT,           KC_ENT,             KC_HOME,
         KC_LSFT,            KC_Z,     KC_X,     KC_C,     V_OR_NUM, KC_B,     N_OR_NUM, KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,            KC_RSFT,  KC_UP,
         KC_LCTL,  KC_LGUI,  KC_LALT,                                KC_SPC,                                 TG(4),    MO(3),    KC_RCTL,  KC_LEFT,  KC_DOWN,  KC_RGHT),
 
     [WIN_NAV] = LAYOUT_ansi_82(
-        _______,  KC_BRID,  KC_BRIU,  KC_TASK,  KC_FILE,  RGB_VAD,  RGB_VAI,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,  KC_VOLD,  KC_VOLU,  KC_INS,            RGB_TOG,
+        _______,  KC_BRID,  KC_BRIU,  TO(9),    KC_FILE,  RGB_VAD,  RGB_VAI,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,  KC_VOLD,  KC_VOLU,  KC_INS,            RGB_TOG,
         _______,  BT_HST1,  BT_HST2,  BT_HST3,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  KC_PGUP,  KC_UP,    KC_PGDN,  KC_PSCR,  _______,  _______,  _______,            _______,
         _______,  KC_LGUI,  KC_LALT,  KC_LCTL,  KC_LSFT,  _______,  KC_HOME,  KC_LEFT,  KC_DOWN,  KC_RGHT,  KC_END,   _______,            _______,            KC_END,
@@ -137,6 +138,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  S(KC_TAB),KC_TAB,   XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,            XXXXXXX,
         XXXXXXX,            XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,  XXXXXXX,
         XXXXXXX,  XXXXXXX,  XXXXXXX,                                TO(2),                                  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX),
+
+    // Colemak DH (accessed via Fn+F3).
+    [WIN_COLEMAK_DH] = LAYOUT_ansi_82(
+        KC_ESC,   KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,   KC_DEL,             KC_MUTE,
+        KC_GRV,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,            KC_PGUP,
+        KC_TAB,   KC_Q,     KC_W,     KC_F,     KC_P,     KC_B,     KC_J,     KC_L,     KC_U,     KC_Y,     KC_SCLN,  KC_LBRC,  KC_RBRC,  KC_BSLS,            KC_PGDN,
+        ESC_OR_NAV,KC_A,    KC_R,     KC_S,     KC_T,     KC_G,     KC_M,     KC_N,     KC_E,     KC_I,     KC_O,     KC_QUOT,            KC_ENT,             KC_HOME,
+        KC_LSFT,            KC_X,     KC_C,     KC_D,     KC_V,     KC_Z,     KC_K,     KC_H,     KC_COMM,  KC_DOT,   KC_SLSH,            KC_RSFT,  KC_UP,
+        KC_LCTL,  KC_LGUI,  KC_LALT,                                KC_SPC,                                 TO(2),    MO(3),    KC_RCTL,  KC_LEFT,  KC_DOWN,  KC_RGHT),
 };
 
 #if defined(ENCODER_MAP_ENABLE)
@@ -150,6 +160,7 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
     [WIN_TERMINAL_NAV] = {ENCODER_CCW_CW(RGB_VAD, RGB_VAI)},
     [WIN_TAB_NAV] = {ENCODER_CCW_CW(RGB_VAD, RGB_VAI)},
     [WIN_WINDOW_NAV] = {ENCODER_CCW_CW(RGB_VAD, RGB_VAI)},
+    [WIN_COLEMAK_DH] = {ENCODER_CCW_CW(RGB_VAD, RGB_VAI)},
 };
 #endif // ENCODER_MAP_ENABLE
 
@@ -214,6 +225,9 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         break;
       case 8:
         rgb_matrix_set_color(i, RGB_RED);
+        break;
+      case 9:
+        rgb_matrix_set_color(i, RGB_GREEN);
         break;
       default:
         break;
