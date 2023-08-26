@@ -4,7 +4,7 @@ QMK setup instructions: https://docs.qmk.fm/#/newbs_getting_started
 
  * keyboard name: keychron/q1_pro/ansi_knob (from `qmk list-keyboards`)
  * Q1 config: ~/personal/qmk/keyboards/keychron/q1/ansi_encoder/keymaps/newtonallen3
- * Iris config: ~/personal/qmk_keychron/keyboards/keebio/iris/rev8
+ * Iris config: ~/personal/qmk_keychron/keyboards/keebio/iris/keymaps/newtonallen3
 
 References:
 
@@ -47,10 +47,37 @@ Tip: to enter the bootloader, switch keyboard to off, then hold escape while plu
 
 (This is the [Bootmagic Lite](https://github.com/qmk/qmk_firmware/blob/master/docs/feature_bootmagic.md) feature at work! No need for the complicated steps on Keychron's website: https://www.keychron.com/blogs/archived/how-to-reset-your-keychron-q1-to-factory-settings.)
 
+For the Iris keyboard, to enter the bootloader, press the reset button on the bottom for 1 second.
+
 ```
 source ~/.virtualenvs/qmk/bin/activate
 qmk compile -kb keychron/q1_pro/ansi_knob -km newtonallen3
 qmk flash
+
+qmk compile -kb keebio/iris/rev8 -km newtonallen3
+~/personal/picotool/build/picotool load -x ~/personal/qmk_keychron/.build/keebio_iris_rev8_newtonallen3.uf2
+```
+
+## Troubleshooting - can't mount RP2040 as a writable disk, so qmk flash fails
+
+Workaround: Use picotool for flashing:
+
+```
+picotool load -x ~/personal/qmk_keychron/.build/keebio_iris_rev8_newtonallen3.uf2
+```
+
+Instructions for building picotool: https://jamesachambers.com/getting-started-guide-raspberry-pi-pico/
+
+Discarded alternative: use dd instead of mounting the device as a pseudo writable filesystem.
+https://www.reddit.com/r/raspberrypipico/comments/l4rhvi/psa_you_can_also_use_dd_for_uploading_new_images
+
+Downside: this doesn't provide feedback in case of problems (e.g. not in bootsel mode), and never
+seemed to work for me.
+
+```
+FIRMWARE=~/personal/qmk_keychron/.build/keebio_iris_rev8_newtonallen3.uf2 
+sudo dd if="$FIRMWARE" of=/dev/sda1 bs="$(stat --printf="%s" "$FIRMWARE")"
+# Better alternative to sda1? /dev/disk/by-id/usb-RPI_RP2_E0C9125B0D9B-0:0-part1
 ```
 
 ## Troubleshooting flashing (fixed)
@@ -124,3 +151,4 @@ Pid: 0x0610
     * The following bigrams are especially commonly triggered: at (Windows+T), kn (Ctrl+N)
     * Could also try adjusting TAPPING_TERM: https://docs.qmk.fm/#/tap_hold?id=dynamic-tapping-term
     * Or could try Combo Mods: https://jasoncarloscox.com/blog/combo-mods/
+    * Or try Achordion: https://getreuer.info/posts/keyboards/achordion/index.html
