@@ -3,7 +3,8 @@
 QMK setup instructions: https://docs.qmk.fm/#/newbs_getting_started
 
  * keyboard name: keychron/q1_pro/ansi_knob (from `qmk list-keyboards`)
- * config: ~/personal/qmk/keyboards/keychron/q1/ansi_encoder/keymaps/newtonallen3
+ * Q1 config: ~/personal/qmk/keyboards/keychron/q1/ansi_encoder/keymaps/newtonallen3
+ * Iris config: ~/personal/qmk_keychron/keyboards/keebio/iris/rev8
 
 References:
 
