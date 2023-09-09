@@ -33,6 +33,27 @@ qmk config user.keymap=newtonallen3
 qmk new-keymap
 ```
 
+For picotool:
+
+ - https://github.com/raspberrypi/picotool
+ - https://jamesachambers.com/getting-started-guide-raspberry-pi-pico/
+
+```
+cd ~/personal
+git clone https://github.com/raspberrypi/pico-sdk.git
+cd pico-sdk
+git submodule update --init
+
+cd ~/personal
+git clone https://github.com/raspberrypi/picotool.git
+sudo cp udev/99-picotool.rules /etc/udev/rules.d/
+cd picotool
+mkdir build
+cd build
+cmake -DPICO_SDK_PATH=../../pico-sdk ..
+make
+```
+
 ## Editing
 
 Files of interest are under `keyboards/keychron/q1_pro/ansi_knob`, e.g.
