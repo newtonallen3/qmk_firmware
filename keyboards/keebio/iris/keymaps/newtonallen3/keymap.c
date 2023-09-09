@@ -2,23 +2,21 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include QMK_KEYBOARD_H
+#include "features/layer_lock.h"
 
 #define _QWERTY 0
 #define _NAV 1
 #define _SYMBOLS 2
-#define _TERMINAL_NAV 3
-#define _DESKTOP_NAV 4
-#define _TAB_NAV 5
-#define _LOWER 6
-#define _RAISE 7
-#define _ADJUST 8
+#define _FUNCTION 3
+#define _NUMBERS 4
+#define _TERMINAL_NAV 5
+#define _DESKTOP_NAV 6
+#define _TAB_NAV 7
 
-//enum custom_keycodes {
-//  QWERTY = SAFE_RANGE,
-//  LOWER,
-//  RAISE,
-//  ADJUST,
-//};
+enum custom_keycodes {
+  // Locks current layer.
+  LLOCK = SAFE_RANGE,
+};
 
 // Home row mods ("GACS"). From https://precondition.github.io/home-row-mods#use-left-and-right-modifiers-but-beware-of-altgr.
 #define HRM_A LGUI_T(KC_A)
@@ -30,11 +28,11 @@
 #define HRM_L RALT_T(KC_L)
 #define HRM_SCN LGUI_T(KC_SCLN) // LGUI is used since RGUI doesn't trigger Linux app switcher
 
-// Caps lock == Escape if tapped; nav layer if held.
-//#define ESC_OR_NAV LT(WIN_NAV, KC_ESC)
-
+// Tab: if held, enable nav layer.
 #define TAB_NAV LT(_NAV, KC_TAB)
-#define ENT_SYM LT(_SYMBOLS, KC_ENT)
+#define ENT_NUM LT(_NUMBERS, KC_ENT)
+#define DEL_FUN LT(_FUNCTION, KC_DEL)
+#define ESC_SYM LT(_SYMBOLS, KC_ESC)
 
 // w: if held, enable Alt nav layer.
 #define W_TENAV LT(_TERMINAL_NAV, KC_W)
@@ -56,41 +54,69 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
      KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                               KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_TAB,  KC_Q,    W_TENAV, E_DENAV, R_TANAV, KC_T,                               KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSLS,
+     _______, KC_Q,    W_TENAV, E_DENAV, R_TANAV, KC_T,                               KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSLS,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_LCTL, HRM_A,   HRM_S,   HRM_D,   HRM_F,   KC_G,                               KC_H,    HRM_J,   HRM_K,   HRM_L,   HRM_SCN, KC_QUOT,
+     KC_ESC,  HRM_A,   HRM_S,   HRM_D,   HRM_F,   KC_G,                               KC_H,    HRM_J,   HRM_K,   HRM_L,   HRM_SCN, KC_QUOT,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    XXXXXXX,          XXXXXXX, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                    KC_ESC,  TAB_NAV, KC_BSPC,                   KC_SPC,  ENT_SYM, KC_DEL
+                                    ESC_SYM, TAB_NAV, KC_BSPC,                   KC_SPC,  ENT_NUM, DEL_FUN
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 
   [_NAV] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-     _______, _______, _______, _______, _______, _______,                            _______, _______, _______, _______, _______, RGB_VAI,
+     _______, _______, _______, _______, _______, QK_BOOT,                            _______, _______, _______, _______, _______, RGB_VAI,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      _______, _______, _______, _______, _______, _______,                            _______, KC_PGUP, KC_UP,   KC_PGDN, KC_PSCR, RGB_VAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      _______, KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, _______,                            KC_HOME, KC_LEFT, KC_DOWN, KC_RGHT, KC_END,  _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, C(KC_Z), C(KC_X), C(KC_C), C(KC_V), _______, _______,          _______, _______, KC_BSPC, KC_DEL,  KC_INS,  _______, _______,
+     LLOCK,   C(KC_Z), C(KC_X), C(KC_C), C(KC_V), _______, _______,          _______, _______, KC_BSPC, KC_DEL,  KC_INS,  _______, _______,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                    _______, _______, _______,                   _______, _______, _______
+                                    _______, LLOCK,   _______,                   _______, _______, _______
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 
   [_SYMBOLS] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
+     _______, _______, _______, _______, _______, _______,                            _______, _______, _______, _______, _______, _______,
+  //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
+     _______, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,                            KC_CIRC, KC_AMPR, KC_ASTR, KC_MINS, KC_PLUS, _______,
+  //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
+     _______, KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, _______,                            KC_EQL,  KC_LPRN, KC_LCBR, KC_LBRC, KC_UNDS, _______,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+     LLOCK,   KC_GRV,  KC_TILD, KC_BSLS, KC_PIPE, KC_BSPC, _______,          _______, _______, KC_RPRN, KC_RCBR, KC_RBRC, _______, _______,
+  //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
+                                    LLOCK,   _______, _______,                   _______, _______, _______
+                                // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
+  ),
+
+  [_FUNCTION] = LAYOUT(
+  //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
      KC_F12,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                              KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, _______, KC_7,    KC_8,    KC_9,    _______,                            _______, _______, _______, _______, _______, _______,
+     _______, _______, _______, _______, _______, _______,                            _______, KC_F9,   KC_F10,  KC_F11,  KC_F12,  _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, KC_0,    KC_1,    KC_2,    KC_3,    _______,                            _______, KC_RSFT, KC_RCTL, KC_RALT, KC_LGUI, _______,
+     _______, KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, _______,                            _______, KC_F5,   KC_F6,   KC_F7,   KC_F8,   _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, _______, KC_4,    KC_5,    KC_6,    _______, _______,          _______, _______, _______, _______, _______, _______, _______,
+     LLOCK,   _______, _______, _______, _______, _______, _______,          _______, _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   _______,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                    _______, _______, _______,                   _______, _______, _______
+                                    _______, _______, _______,                   _______, _______, LLOCK
+                                // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
+  ),
+
+  [_NUMBERS] = LAYOUT(
+  //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
+     _______, _______, _______, _______, _______, _______,                            _______, _______, _______, _______, _______, _______,
+  //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
+     _______, _______, _______, _______, _______, _______,                            _______, KC_7,    KC_8,    KC_9,    _______, _______,
+  //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
+     _______, KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, _______,                            _______, KC_1,    KC_2,    KC_3,    KC_0,    _______,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+     LLOCK,   _______, _______, _______, _______, _______, _______,          _______, _______, KC_4,    KC_5,    KC_6,    _______, _______,
+  //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
+                                    _______, _______, _______,                   _______, LLOCK,   _______
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 
@@ -193,46 +219,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  )
 };
 
-//bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-//  switch (keycode) {
-//    case QWERTY:
-//      if (record->event.pressed) {
-//        set_single_persistent_default_layer(_QWERTY);
-//      }
-//      return false;
-//      break;
-//    case LOWER:
-//      if (record->event.pressed) {
-//        layer_on(_LOWER);
-//        update_tri_layer(_LOWER, _RAISE, _ADJUST);
-//      } else {
-//        layer_off(_LOWER);
-//        update_tri_layer(_LOWER, _RAISE, _ADJUST);
-//      }
-//      return false;
-//      break;
-//    case RAISE:
-//      if (record->event.pressed) {
-//        layer_on(_RAISE);
-//        update_tri_layer(_LOWER, _RAISE, _ADJUST);
-//      } else {
-//        layer_off(_RAISE);
-//        update_tri_layer(_LOWER, _RAISE, _ADJUST);
-//      }
-//      return false;
-//      break;
-//    case ADJUST:
-//      if (record->event.pressed) {
-//        layer_on(_ADJUST);
-//      } else {
-//        layer_off(_ADJUST);
-//      }
-//      return false;
-//      break;
-//  }
-//  return true;
-//}
-
+// Supports locking layers.
+// Source: https://getreuer.info/posts/keyboards/layer-lock/index.html
+bool process_record_user(uint16_t keycode, keyrecord_t* record) {
+  if (!process_layer_lock(keycode, record, LLOCK)) { return false; }
+  return true;
+}
 
 // LEDs indicate current layer (solid color for each layer; base layer is unlit).
 //
@@ -252,6 +244,12 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         break;
       case _SYMBOLS:
         rgb_matrix_set_color(i, RGB_BLUE);
+        break;
+      case _FUNCTION:
+        rgb_matrix_set_color(i, RGB_TEAL);
+        break;
+      case _NUMBERS:
+        rgb_matrix_set_color(i, RGB_PURPLE);
         break;
       case _DESKTOP_NAV:
         rgb_matrix_set_color(i, RGB_YELLOW);

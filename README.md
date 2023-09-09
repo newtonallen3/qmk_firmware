@@ -4,7 +4,7 @@ QMK setup instructions: https://docs.qmk.fm/#/newbs_getting_started
 
  * keyboard name: keychron/q1_pro/ansi_knob (from `qmk list-keyboards`)
  * Q1 config: ~/personal/qmk/keyboards/keychron/q1/ansi_encoder/keymaps/newtonallen3
- * Iris config: ~/personal/qmk_keychron/keyboards/keebio/iris/keymaps/newtonallen3
+ * Iris config: ~/personal/qmk/keyboards/keebio/iris/keymaps/newtonallen3
 
 References:
 
@@ -59,7 +59,7 @@ make
 Files of interest are under `keyboards/keychron/q1_pro/ansi_knob`, e.g.
 
 ```
-vim ~/personal/qmk_keychron/keyboards/keychron/q1_pro/ansi_knob/keymaps/newtonallen3/keymap.c
+vim ~/personal/qmk/keyboards/keychron/q1_pro/ansi_knob/keymaps/newtonallen3/keymap.c
 ```
 
 ## Compiling and flashing
@@ -75,8 +75,8 @@ source ~/.virtualenvs/qmk/bin/activate
 qmk compile -kb keychron/q1_pro/ansi_knob -km newtonallen3
 qmk flash
 
-qmk compile -kb keebio/iris/rev8 -km newtonallen3
-~/personal/picotool/build/picotool load -x ~/personal/qmk_keychron/.build/keebio_iris_rev8_newtonallen3.uf2
+qmk compile -kb keebio/iris/rev8 -km newtonallen3 && \
+~/personal/picotool/build/picotool load -x ~/personal/qmk/keebio_iris_rev8_newtonallen3.uf2
 ```
 
 ## Troubleshooting - can't mount RP2040 as a writable disk, so qmk flash fails
@@ -84,7 +84,7 @@ qmk compile -kb keebio/iris/rev8 -km newtonallen3
 Workaround: Use picotool for flashing:
 
 ```
-picotool load -x ~/personal/qmk_keychron/.build/keebio_iris_rev8_newtonallen3.uf2
+picotool load -x ~/personal/qmk/keebio_iris_rev8_newtonallen3.uf2
 ```
 
 Instructions for building picotool: https://jamesachambers.com/getting-started-guide-raspberry-pi-pico/
@@ -96,7 +96,7 @@ Downside: this doesn't provide feedback in case of problems (e.g. not in bootsel
 seemed to work for me.
 
 ```
-FIRMWARE=~/personal/qmk_keychron/.build/keebio_iris_rev8_newtonallen3.uf2 
+FIRMWARE=~/personal/qmk/keebio_iris_rev8_newtonallen3.uf2
 sudo dd if="$FIRMWARE" of=/dev/sda1 bs="$(stat --printf="%s" "$FIRMWARE")"
 # Better alternative to sda1? /dev/disk/by-id/usb-RPI_RP2_E0C9125B0D9B-0:0-part1
 ```
