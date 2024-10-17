@@ -56,7 +56,8 @@
 /* ====== Newton's additions ====== */
 
 // Press both Shift keys to enable CAPS_WORD mode.
-#define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
+// Disabled b/c this is too easy to trigger accidentally.
+//#define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
 
 // Needed for sane home-row mods. Otherwise the default behavior is HOLD_ON_OTHER_KEY_PRESS,
 // which triggers way too easily. https://docs.qmk.fm/#/tap_hold
