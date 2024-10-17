@@ -17,7 +17,7 @@ References:
 ## Features added:
 
  * LED indicates current layer (solid color for each layer except base)
- * "Caps Word" feature triggered by pressing both Shifts
+ * "Caps Word" feature triggered by pressing both Shifts (disabled now)
 
 ## One-time setup
 
@@ -35,11 +35,11 @@ qmk new-keymap
 
 ## Editing
 
-Files of interest are under `keyboards/keychron/q1_pro/ansi_knob`, e.g.
+Files of interest are under `keyboards/keychron/q1_pro/ansi_knob`:
 
-```
-vim ~/personal/qmk_keychron/keyboards/keychron/q1_pro/ansi_knob/keymaps/newtonallen3/keymap.c
-```
+ * keyboards/keychron/q1_pro/ansi_knob/keymaps/newtonallen3/keymap.c
+ * keyboards/keychron/q1_pro/ansi_knob/config.h
+ * keyboards/keychron/q1_pro/rules.mk
 
 ## Compiling and flashing
 
